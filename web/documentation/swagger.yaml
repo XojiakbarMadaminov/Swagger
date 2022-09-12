@@ -1,0 +1,207 @@
+openapi: 3.0.0
+info:
+  title: 'Swagger platform for Test'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8080/'
+    description: 'Test API'
+paths:
+  /login/login/:
+      post:
+        tags:
+          - auth
+        summary: "User login"
+        description: "User login qilish uchun"
+        operationId: login
+        requestBody:
+          description: 'Request Body Description'
+          required: true
+          content:
+            multipart/form-data:
+              schema:
+                required:
+                  - username
+                  - password
+                properties:
+                  username:
+                    type: string
+                    example: login
+                  password:
+                    type: string
+                    example: password
+                type: object
+        responses:
+          '200':
+            description: AOK
+          '404':
+            description: 'Not found'
+  /post-api:
+      get:
+        security:
+          - bearerAuth: []
+        tags:
+          - posts
+        description: Post list
+        operationId: post-api
+        responses:
+          '200':
+            description: OK
+          '401':
+            description: 'не пренадлежит вам или вы не авторизавались'
+  /post-api/create/:
+        post:
+          security:
+            - bearerAuth: []
+          tags:
+            - posts
+          summary: "Post create"
+          description: "Post yaratish uchun"
+          operationId: post-create
+          requestBody:
+            description: 'Request Body Description'
+            required: true
+            content:
+              multipart/form-data:
+                schema:
+                  required:
+                    - text
+                  properties:
+                    text:
+                      type: string
+                  type: object
+          responses:
+            '200':
+              description: AOK
+            '404':
+              description: 'Not found'
+  /user-api/:
+          get:
+            security:
+              - bearerAuth: [ ]
+            tags:
+              - users
+            description: User list
+            operationId: user-api
+            responses:
+              '200':
+                description: OK
+              '401':
+                description: 'не пренадлежит вам или вы не авторизавались'
+  /user-api/create/:
+      post:
+        security:
+          - bearerAuth: []
+        tags:
+          - users
+        summary: "User create"
+        description: "User yaratish uchun"
+        operationId: user-create
+        requestBody:
+          description: 'Request Body Description'
+          required: true
+          content:
+            multipart/form-data:
+              schema:
+                required:
+                  - username
+                  - password
+                properties:
+                  username:
+                    type: string
+                    example: username
+                  password:
+                    type: string
+                    example: password
+                type: object
+        responses:
+          '200':
+            description: AOK
+          '404':
+            description: 'Not found'
+  /post-api/update/?id={id}:
+      post:
+        security:
+          - bearerAuth: []
+        tags:
+          - posts
+        summary: "Update post"
+        description: "Postni tahrirlash"
+        operationId: post-update
+        parameters:
+          -
+            name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          description: 'Request Body Description'
+          required: true
+          content:
+            multipart/form-data:
+              schema:
+                properties:
+                  text:
+                    type: string
+                type: object
+        responses:
+          '200':
+            description: AOK
+          '404':
+            description: 'Not found'
+  /user-api/update/?id={id}:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - users
+      summary: "Update user"
+      description: "Userni tahrirlash"
+      operationId: user-update
+#      parameters:
+#        - name: id
+#          in: path
+#          required: true
+#          schema:
+#            type: integer
+      requestBody:
+        description: 'Request Body Description'
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: AOK
+        '404':
+          description: 'Not found'
+components:
+  schemas:
+    Parameters:
+      properties:
+        text:
+          description: 'Text for post'
+          type: string
+        user_id:
+          type: integer
+        username:
+          type: string
+        password:
+          type: string
+          uniqueItems: true
+      type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      in: header
+      scheme: bearer
+
+
+

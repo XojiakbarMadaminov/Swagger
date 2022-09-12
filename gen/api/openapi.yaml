@@ -1,0 +1,52 @@
+openapi: 3.0.0
+info:
+  title: Swagger platform for Test
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/
+paths:
+  /post-api:
+    get:
+      operationId: post-api
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: не пренадлежит вам или вы не авторизавались
+      tags:
+      - posts
+      x-accepts: application/json
+  /post-api/create/:
+    post:
+      operationId: postCreate
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                text:
+                  description: Text for post
+                  type: string
+                user_id:
+                  type: integer
+              required:
+              - text
+              - user_id
+        description: Request Body Description
+        required: true
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: account is wrong!
+        "401":
+          description: Not allowed
+      security:
+      - bearerAuth: []
+      tags:
+      - posts
+      x-contentType: multipart/form-data
+      x-accepts: application/json
+components:
+  schemas: {}
+
